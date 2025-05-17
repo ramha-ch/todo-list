@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('* * * * *')  // This means every minute
+    }
+
     stages {
         stage('Clone') {
             steps {
