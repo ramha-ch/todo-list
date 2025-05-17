@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     triggers {
-        githubPush() 
-        ##pollSCM('* * * * *')  // This means every minute
+
+    
     }
 
     stages {
