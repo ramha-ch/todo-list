@@ -14,14 +14,14 @@ pipeline {
         stage('Build') {
             when {
                 anyOf {
-                    branch 'dev';
-                    branch 'test';
-                    branch 'main';
+                    branch 'dev'
+                    branch 'test'
+                    branch 'main'
                 }
             }
             steps {
                 echo "Building Docker image..."
-                sh 'docker build -t rimsha524/todo-list:${BRANCH_NAME} .'   
+                sh "docker build -t rimsha524/todo-list:${env.BRANCH_NAME} ."
             }
         }
 
@@ -42,8 +42,10 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'JENKINS_PROJECT', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
-                        sh "docker push rimsha524/todo-list:main"
+                        sh """
+                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                            docker push rimsha524/todo-list:main
+                        """
                     }
                 }
             }
@@ -59,4 +61,3 @@ pipeline {
         }
     }
 }
-
